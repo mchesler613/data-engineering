@@ -1,0 +1,29 @@
+[project]
+name = "data-engineering-module-1"
+version = "0.1.0"
+description = "Data Engineering Module 1"
+authors = [
+    {name = "Merilyn Chesler",email = "mc@box613.com"}
+]
+license = {text = "MIT License"}
+readme = "README.md"
+package-mode = false
+requires-python = ">=3.12"
+dependencies = [
+    "pandas (>=2.2.3,<3.0.0)",
+    "flake8 (>=7.1.1,<8.0.0)",
+    "pre-commit (>=4.0.1,<5.0.0)",
+    "isort (>=5.13.2,<6.0.0)",
+    "pprintpp (>=0.4.0,<0.5.0)",
+    "pp-ez (>=0.2.0,<0.3.0)",
+    "pyarrow (>=18.1.0,<19.0.0)",
+    "fastparquet (>=2024.11.0,<2025.0.0)",
+    "requests (>=2.32.3,<3.0.0)",
+    "pgpq (>=0.9.0,<0.10.0)",
+    "psycopg[binary,pool] (>=3.2.3,<4.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
