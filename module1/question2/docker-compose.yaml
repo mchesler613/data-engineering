@@ -1,6 +1,6 @@
 services:
   db:
-    container_name: postgres
+    container_name: postgres-2
     image: postgres:17-alpine
     environment:
       POSTGRES_USER: 'postgres'
@@ -12,13 +12,13 @@ services:
       - vol-pgdata:/var/lib/postgresql/data
 
   pgadmin:
-    container_name: pgadmin
+    container_name: pgadmin-2
     image: dpage/pgadmin4:latest
     environment:
       PGADMIN_DEFAULT_EMAIL: "pgadmin@pgadmin.com"
       PGADMIN_DEFAULT_PASSWORD: "pgadmin"
     ports:
-      - "8080:80"
+      - "8082:80"
     volumes:
       - vol-pgadmin_data:/var/lib/pgadmin  
 

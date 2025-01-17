@@ -1,5 +1,6 @@
 # Data Engineering Module 1 Answers for Questions 3-6
 
+## Table of Contents
 Steps to follow:
 1. [Setup development environment](#setup-development-environment)
 2. [Build Docker container for Postgres and pgadmin](#build-docker-container-for-postgres-and-pgadmin)
@@ -9,7 +10,12 @@ Steps to follow:
     - [Run Docker image for script](#Ingest-Data-via-Docker)
 5. [Check postgres database with `pgcli`](#Check-the-postgres-database-with-pgcli)
 6. Answer homework questions 3 through 6
-
+    - [Question 1](#Question-1)
+    - [Question 2](#Question-2)
+    - [Question 3](#Question-3)
+    - [Question 4](#Question-4)
+    - [Question 5](#Question-5)
+    - [Question 6](#Question-6)
 
 # Setup development environment
 This directory is maintained by [poetry](https://python-poetry.org) and [pyenv](https://github.com/pyenv/pyenv-installer). To create a virtual environment, do the following:
@@ -156,3 +162,105 @@ root@localhost:ny_taxi> select count(*) from taxi_zones;
 SELECT 1
 Time: 0.007s
 ```
+
+# Question 1
+
+## Dockerfile
+
+```
+$ cat Dockerfile
+FROM python:3.12.8
+
+# specify work directory
+WORKDIR /app
+
+RUN python -m venv /venv
+ENV PATH=/venv/bin:$PATH VIRTUAL_ENV=/venv
+
+# Question 1 entrypoint is bash only
+ENTRYPOINT [ "bash" ]
+```
+
+## build docker with docker build from Dockerfile
+
+```
+$ docker build -t h1:q1 .
+[+] Building 8.3s (7/7) FINISHED                                                                    docker:desktop-linux
+ => [internal] load build definition from Dockerfile                                                                0.0s
+ => => transferring dockerfile: 469B                                                                                0.0s
+ => [internal] load metadata for docker.io/library/python:3.12.8                                                    0.5s
+ => [internal] load .dockerignore                                                                                   0.0s
+ => => transferring context: 2B                                                                                     0.0s
+ => CACHED [1/3] FROM docker.io/library/python:3.12.8@sha256:251ef8e69b6ccdf3c7bf7effaa51179d59af35364dd9c86469142  0.0s
+ => => resolve docker.io/library/python:3.12.8@sha256:251ef8e69b6ccdf3c7bf7effaa51179d59af35364dd9c86469142aa72a2c  0.0s
+ => [2/3] WORKDIR /app                                                                                              0.0s
+ => [3/3] RUN python -m venv /venv                                                                                  4.7s
+ => exporting to image                                                                                              2.9s
+ => => exporting layers                                                                                             1.5s
+ => => exporting manifest sha256:c753894e17a7797f7d9d5bb2779e3e3c8028a50b7a0c4b53eb5def4d7c31b95c                   0.1s
+ => => exporting config sha256:247f859408653c5b07ee0fc39da69fc404f4121b8b0c33017bbc20e9c90b5dea                     0.1s
+ => => exporting attestation manifest sha256:22bf60b95d28a2455e0793642d60ad47851de31dab0476a2788944358667cad3       0.3s
+ => => exporting manifest list sha256:17740e0a1cbd726df9ab5a228b10678489bb80e909258b18a98ce2e653ebf5c1              0.2s
+ => => naming to docker.io/library/h1:q1                                                                            0.0s
+ => => unpacking to docker.io/library/h1:q1```
+
+## run docker with docker run --it
+
+```
+$ docker run -it h1:q1
+root@8f9965d6afb3:/app# python --version
+Python 3.12.8
+root@8f9965d6afb3:/app# pip --version
+pip 24.3.1 from /venv/lib/python3.12/site-packages/pip (python 3.12)
+root@8f9965d6afb3:/app#
+```
+## Answer
+Version of `pip` is `24.3.1`
+
+# Question 2
+## Content of `docker-compose.yaml`
+```
+$ cat docker-compose.yaml
+services:
+  db:
+    container_name: postgres-2
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: 'postgres'
+      POSTGRES_DB: 'ny_taxi'
+    ports:
+      - '5433:5432'
+    volumes:
+      - vol-pgdata:/var/lib/postgresql/data
+
+  pgadmin:
+    container_name: pgadmin-2
+    image: dpage/pgadmin4:latest
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "pgadmin@pgadmin.com"
+      PGADMIN_DEFAULT_PASSWORD: "pgadmin"
+    ports:
+      - "8082:80"
+    volumes:
+      - vol-pgadmin_data:/var/lib/pgadmin
+
+volumes:
+  vol-pgdata:
+    name: vol-pgdata
+  vol-pgadmin_data:
+    name: vol-pgadmin_data
+```
+
+## docker compose up -d
+```
+$ docker compose up -d
+[+] Running 2/2
+ ✔ Container postgres-2  Running                                                   0.0s
+ ✔ Container pgadmin-2   Started                                                   1.4s
+```
+
+## Access http://localhost:8082 on browser
+Register a Postgres server with hostname `db` and port `5432`
+
+![2025-01-17-12-46-27.jpg](https://i.postimg.cc/hGP7j8X4/2025-01-17-12-46-27.jpg)
