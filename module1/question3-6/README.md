@@ -510,6 +510,27 @@ Which of the following sequences, respectively, describes the workflow for:
 - Generating proposed changes and auto-executing the plan
 - Remove all resources managed by terraform`
 
+## init terraform
+in directory with `main.tf` and `variables.tf`
+
+```
+$ terraform init
+Initializing the backend...
+Initializing provider plugins...
+- Reusing previous version of hashicorp/google from the dependency lock file
+- Using previously-installed hashicorp/google v5.6.0
+
+Terraform has been successfully initialized!
+
+You may now begin working with Terraform. Try running "terraform plan" to see
+any changes that are required for your infrastructure. All Terraform commands
+should now work.
+
+If you ever set or change modules or backend configuration for Terraform,
+rerun this command to reinitialize your working directory. If you forget, other
+commands will detect it and remind you to do so if necessary.
+```
+
 ## auto-apply terraform plan
 
 ```
@@ -584,6 +605,115 @@ google_bigquery_dataset.merilyn_demo_dataset: Creation complete after 2s [id=pro
 google_storage_bucket.merilyn_demo_bucket: Creation complete after 2s [id=merilyn_demo_bucket]
 
 Apply complete! Resources: 2 added, 0 changed, 0 destroyed.
+```
+
+## terraform destroy
+
+```
+$ terraform destroy
+google_bigquery_dataset.merilyn_demo_dataset: Refreshing state... [id=projects/silent-blade-447917-q2/datasets/merilyn_demo_dataset]
+google_storage_bucket.merilyn_demo_bucket: Refreshing state... [id=merilyn_demo_bucket]
+
+Terraform used the selected providers to generate the following execution plan.
+Resource actions are indicated with the following symbols:
+  - destroy
+
+Terraform will perform the following actions:
+
+  # google_bigquery_dataset.merilyn_demo_dataset will be destroyed
+  - resource "google_bigquery_dataset" "merilyn_demo_dataset" {
+      - creation_time                   = 1736980012577 -> null
+      - dataset_id                      = "merilyn_demo_dataset" -> null
+      - default_partition_expiration_ms = 0 -> null
+      - default_table_expiration_ms     = 0 -> null
+      - delete_contents_on_destroy      = false -> null
+      - effective_labels                = {} -> null
+      - etag                            = "6/PabOiiOwFJkZ/fzm9gRw==" -> null
+      - id                              = "projects/silent-blade-447917-q2/datasets/merilyn_demo_dataset" -> null
+      - is_case_insensitive             = false -> null
+      - labels                          = {} -> null
+      - last_modified_time              = 1736980012577 -> null
+      - location                        = "US" -> null
+      - max_time_travel_hours           = "168" -> null
+      - project                         = "silent-blade-447917-q2" -> null
+      - self_link                       = "https://bigquery.googleapis.com/bigquery/v2/projects/silent-blade-447917-q2/datasets/merilyn_demo_dataset" -> null
+      - terraform_labels                = {} -> null
+        # (4 unchanged attributes hidden)
+
+      - access {
+          - role           = "OWNER" -> null
+          - user_by_email  = "terraform@silent-blade-447917-q2.iam.gserviceaccount.com" -> null
+            # (4 unchanged attributes hidden)
+        }
+      - access {
+          - role           = "OWNER" -> null
+          - special_group  = "projectOwners" -> null
+            # (4 unchanged attributes hidden)
+        }
+      - access {
+          - role           = "READER" -> null
+          - special_group  = "projectReaders" -> null
+            # (4 unchanged attributes hidden)
+        }
+      - access {
+          - role           = "WRITER" -> null
+          - special_group  = "projectWriters" -> null
+            # (4 unchanged attributes hidden)
+        }
+    }
+
+  # google_storage_bucket.merilyn_demo_bucket will be destroyed
+  - resource "google_storage_bucket" "merilyn_demo_bucket" {
+      - default_event_based_hold    = false -> null
+      - effective_labels            = {} -> null
+      - enable_object_retention     = false -> null
+      - force_destroy               = true -> null
+      - id                          = "merilyn_demo_bucket" -> null
+      - labels                      = {} -> null
+      - location                    = "US" -> null
+      - name                        = "merilyn_demo_bucket" -> null
+      - project                     = "silent-blade-447917-q2" -> null
+      - public_access_prevention    = "inherited" -> null
+      - requester_pays              = false -> null
+      - self_link                   = "https://www.googleapis.com/storage/v1/b/merilyn_demo_bucket" -> null
+      - storage_class               = "STANDARD" -> null
+      - terraform_labels            = {} -> null
+      - uniform_bucket_level_access = false -> null
+      - url                         = "gs://merilyn_demo_bucket" -> null
+
+      - lifecycle_rule {
+          - action {
+              - type          = "AbortIncompleteMultipartUpload" -> null
+                # (1 unchanged attribute hidden)
+            }
+          - condition {
+              - age                        = 1 -> null
+              - days_since_custom_time     = 0 -> null
+              - days_since_noncurrent_time = 0 -> null
+              - matches_prefix             = [] -> null
+              - matches_storage_class      = [] -> null
+              - matches_suffix             = [] -> null
+              - num_newer_versions         = 0 -> null
+              - with_state                 = "ANY" -> null
+                # (3 unchanged attributes hidden)
+            }
+        }
+    }
+
+Plan: 0 to add, 0 to change, 2 to destroy.
+
+Do you really want to destroy all resources?
+  Terraform will destroy all your managed infrastructure, as shown above.
+  There is no undo. Only 'yes' will be accepted to confirm.
+
+  Enter a value: yes
+
+google_storage_bucket.merilyn_demo_bucket: Destroying... [id=merilyn_demo_bucket]
+google_bigquery_dataset.merilyn_demo_dataset: Destroying... [id=projects/silent-blade-447917-q2/datasets/merilyn_demo_dataset]
+google_bigquery_dataset.merilyn_demo_dataset: Destruction complete after 1s
+google_storage_bucket.merilyn_demo_bucket: Destruction complete after 1s
+
+Destroy complete! Resources: 2 destroyed.
 ```
 ## Answer
 `terraform init, terraform apply -auto-aprove, terraform destroy`
