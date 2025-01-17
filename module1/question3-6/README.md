@@ -1,4 +1,4 @@
-# Data Engineering Module 1 Answers for Questions 3-6
+# Data Engineering Module 1 Answers for Questions 3-7
 
 ## Table of Contents
 Steps to follow:
@@ -16,6 +16,7 @@ Steps to follow:
     - [Question 4](#Question-4)
     - [Question 5](#Question-5)
     - [Question 6](#Question-6)
+    - [Question 7](#Question-7)
 
 # Setup development environment
 This directory is maintained by [poetry](https://python-poetry.org) and [pyenv](https://github.com/pyenv/pyenv-installer). To create a virtual environment, do the following:
@@ -500,3 +501,89 @@ Time: 0.006s
 ```
 ## Answer
 `JFK Airport`
+
+
+# Question 7
+Which of the following sequences, respectively, describes the workflow for:
+
+- Downloading the provider plugins and setting up backend,
+- Generating proposed changes and auto-executing the plan
+- Remove all resources managed by terraform`
+
+## auto-apply terraform plan
+
+```
+$ terraform apply -var 'project=silent-blade-447917-q2' -auto-approve
+
+Terraform used the selected providers to generate the following execution plan. Resource
+actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # google_bigquery_dataset.merilyn_demo_dataset will be created
+  + resource "google_bigquery_dataset" "merilyn_demo_dataset" {
+      + creation_time              = (known after apply)
+      + dataset_id                 = "merilyn_demo_dataset"
+      + default_collation          = (known after apply)
+      + delete_contents_on_destroy = false
+      + effective_labels           = (known after apply)
+      + etag                       = (known after apply)
+      + id                         = (known after apply)
+      + is_case_insensitive        = (known after apply)
+      + last_modified_time         = (known after apply)
+      + location                   = "US"
+      + max_time_travel_hours      = (known after apply)
+      + project                    = "silent-blade-447917-q2"
+      + self_link                  = (known after apply)
+      + storage_billing_model      = (known after apply)
+      + terraform_labels           = (known after apply)
+
+      + access (known after apply)
+    }
+
+  # google_storage_bucket.merilyn_demo_bucket will be created
+  + resource "google_storage_bucket" "merilyn_demo_bucket" {
+      + effective_labels            = (known after apply)
+      + force_destroy               = true
+      + id                          = (known after apply)
+      + location                    = "US"
+      + name                        = "merilyn_demo_bucket"
+      + project                     = (known after apply)
+      + public_access_prevention    = (known after apply)
+      + self_link                   = (known after apply)
+      + storage_class               = "STANDARD"
+      + terraform_labels            = (known after apply)
+      + uniform_bucket_level_access = (known after apply)
+      + url                         = (known after apply)
+
+      + lifecycle_rule {
+          + action {
+              + type          = "AbortIncompleteMultipartUpload"
+                # (1 unchanged attribute hidden)
+            }
+          + condition {
+              + age                    = 1
+              + matches_prefix         = []
+              + matches_storage_class  = []
+              + matches_suffix         = []
+              + with_state             = (known after apply)
+                # (3 unchanged attributes hidden)
+            }
+        }
+
+      + versioning (known after apply)
+
+      + website (known after apply)
+    }
+
+Plan: 2 to add, 0 to change, 0 to destroy.
+google_bigquery_dataset.merilyn_demo_dataset: Creating...
+google_storage_bucket.merilyn_demo_bucket: Creating...
+google_bigquery_dataset.merilyn_demo_dataset: Creation complete after 2s [id=projects/silent-blade-447917-q2/datasets/merilyn_demo_dataset]
+google_storage_bucket.merilyn_demo_bucket: Creation complete after 2s [id=merilyn_demo_bucket]
+
+Apply complete! Resources: 2 added, 0 changed, 0 destroyed.
+```
+## Answer
+`terraform init, terraform apply -auto-aprove, terraform destroy`
