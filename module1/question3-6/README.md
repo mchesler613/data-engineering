@@ -2,12 +2,12 @@
 
 Steps to follow:
 1. [Setup development environment](#setup-development-environment)
-2. [Build Docker container for postgres and pgadmin](#build-docker-container-for-postgres-and-pgadmin)
-3. [Ingest data via python script](#Ingest-2019 -NY-green-taxi-and-taxi-zones-data)
+2. [Build Docker container for Postgres and pgadmin](#build-docker-container-for-postgres-and-pgadmin)
+3. [Ingest data via Python script](#Ingest-2019-NY-green-taxi-and-taxi-zones-data)
 4. Ingest data via docker run
     - [Build Docker image for script via `Dockerfile`](#Build-a-Docker-image-based-on-Dockerfile)
     - [Run Docker image for script](#Ingest-Data-via-Docker)
-5. [Check postgres database with `pgcli`](#Check-the-postgres-database-with-`pgcli`)
+5. [Check postgres database with `pgcli`](#Check-the-postgres-database-with-pgcli)
 6. Answer homework questions 3 through 6
 
 
@@ -137,7 +137,7 @@ drop table taxi_zones
 265 rows ingested
 ```
 
-# Check the postgres database with `pgcli`
+# Check the postgres database with pgcli
 ```
 root@localhost:ny_taxi> select count(*) from green_taxi;
 +--------+
