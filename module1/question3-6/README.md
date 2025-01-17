@@ -325,7 +325,7 @@ drop table taxi_zones
 ...
 265 rows ingested
 ```
-## Query 3.1
+## Queries
 During the period of October 1st 2019 (inclusive) and November 1st 2019 (exclusive), how many trips, respectively, happened 
 - `up to 1 mile`?
 
