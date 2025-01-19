@@ -19,9 +19,11 @@ Steps to follow:
     - [Question 7](#Question-7)
 
 # Setup development environment
-This directory is maintained by [poetry](https://python-poetry.org) and [pyenv](https://github.com/pyenv/pyenv-installer). To create a virtual environment, do the following:
+
+This directory, `question3-6` is maintained by [poetry](https://python-poetry.org) and [pyenv](https://github.com/pyenv/pyenv-installer). To create a virtual environment, do the following:
 
 ```
+cd question3-6
 pyenv shell 3.12
 poetry env use 3.12
 source $(poetry env info --path)/bin/activate
@@ -166,9 +168,12 @@ Time: 0.007s
 
 # Question 1
 
+Answer for question 1 is hosted in `question1` directory.
+
 ## Dockerfile
 
 ```
+$ cd question1
 $ cat Dockerfile
 FROM python:3.12.8
 
@@ -219,6 +224,10 @@ root@8f9965d6afb3:/app#
 Version of `pip` is `24.3.1`
 
 # Question 2
+Answer for question 2 is hosted in `question2` directory.
+
+`$ cd question2`
+
 ## Content of `docker-compose.yaml`
 ```
 $ cat docker-compose.yaml
@@ -271,10 +280,13 @@ Register a Postgres server with hostname `db` and port `5432`
 
 # Question 3
 
+Answers for question 3 through 6 are hosted in `question3-6` directory.
+
 ## Build Dockerfile
 
 ```
-docker build -t h1:q3 .
+$ cd question3-6
+$ docker build -t h1:q3 .
 [+] Building 3.6s (15/15) FINISHED                                         docker:desktop-linux
  => [internal] load build definition from Dockerfile                                       0.0s
  => => transferring dockerfile: 510B                                                       0.0s
@@ -307,7 +319,7 @@ docker build -t h1:q3 .
 ## Run Dockerfile
 
 ```
-docker run -it --network=net-pgdata h1:q3 --host=postgres_service
+$ docker run -it --network=net-pgdata h1:q3 --host=postgres_service
 Arguments passed:
 Namespace(user='root', password='root', host='postgres_service', port='5432', db='ny_taxi', table_name='green_taxi', url='https://d37ci6vzurychx.cloudfront.net/trip-datagreen_tripdata_2019-10.parquet')
 Database URI
@@ -504,6 +516,8 @@ Time: 0.006s
 
 
 # Question 7
+Answer for question 7 is hosted in `terraform` directory.
+
 Which of the following sequences, respectively, describes the workflow for:
 
 - Downloading the provider plugins and setting up backend,
