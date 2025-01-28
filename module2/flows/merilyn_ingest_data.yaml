@@ -1,0 +1,56 @@
+id: merilyn_ingest_data
+namespace: merilyn_zoomcamp
+description: |
+  Ingest data from NY Taxi parquet files
+
+inputs:
+  - id: taxi
+    type: SELECT
+    displayName: Select taxi type
+    values: [yellow, green]
+    defaults: green
+
+  - id: year
+    type: SELECT
+    displayName: Select year
+    values: ["2019", "2020"]
+    defaults: "2019"
+
+  - id: month
+    type: SELECT
+    displayName: Select month
+    values: ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"]
+    defaults: "01"
+
+variables:
+  table_name: "{{ inputs.taxi }}_taxi"
+  datafile: "{{ inputs.taxi }}_tripdata_{{ inputs.year }}-{{ inputs.month }}.parquet"
+
+tasks:
+  - id: ingest_data
+    type: io.kestra.plugin.scripts.shell.Commands
+    taskRunner:
+      type: io.kestra.plugin.core.runner.Process
+    beforeCommands:
+      # install Poetry
+      - curl -sSL https://install.python-poetry.org | python3 -
+      - export PATH="$HOME/.local/bin:$PATH"
+      - poetry --version
+
+      # cd to folder containing pyproject.toml
+      - cd /scripts
+
+      # create virtual environment
+      - python -m venv .venv
+      - . .venv/bin/activate
+
+      # configure Poetry to use virtual environment
+      - poetry config virtualenvs.in-project true
+      - poetry install --no-root
+    commands:
+      - python ingest_data.py --host postgres --table_name {{ render(vars.table_name) }} --url "https://d37ci6vzurychx.cloudfront.net/trip-data/{{ render(vars.datafile) }}"
+
+  - id: log_ingest_data
+    type: io.kestra.plugin.core.log.Log 
+    message: |
+      Output from ingest_data.py is {{ outputs.ingest_data.vars }}

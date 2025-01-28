@@ -1,0 +1,60 @@
+id: merilyn_ingest_data_scheduled
+namespace: merilyn_zoomcamp
+description: |
+  Ingest data from NY Taxi parquet files based on a schedule
+
+concurrency:
+  limit: 1
+
+inputs:
+  - id: taxi
+    type: SELECT
+    displayName: Select taxi type
+    values: [yellow, green]
+    defaults: green
+
+variables:
+  table_name: "{{ inputs.taxi }}_taxi"
+  datafile: "{{ inputs.taxi }}_tripdata_{{ trigger.date | date('yyyy-MM') }}.parquet"
+
+tasks:
+  - id: ingest_data
+    type: io.kestra.plugin.scripts.shell.Commands
+    taskRunner:
+      type: io.kestra.plugin.core.runner.Process
+    beforeCommands:
+      # install Poetry
+      - curl -sSL https://install.python-poetry.org | python3 -
+      - export PATH="$HOME/.local/bin:$PATH"
+      - poetry --version
+
+      # cd to folder containing pyproject.toml
+      - cd /scripts
+
+      # create virtual environment
+      - python -m venv .venv
+      - . .venv/bin/activate
+
+      # configure Poetry to use virtual environment
+      - poetry config virtualenvs.in-project true
+      - poetry install --no-root
+    commands:
+      - python ingest_data.py --host postgres --table_name {{ render(vars.table_name) }} --url "https://d37ci6vzurychx.cloudfront.net/trip-data/{{ render(vars.datafile) }}"
+
+  - id: log_ingest_data
+    type: io.kestra.plugin.core.log.Log 
+    message: |
+      Output from ingest_data.py is {{ outputs.ingest_data.vars }}
+
+triggers:
+  - id: green_schedule
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "0 9 1 * *"
+    inputs:
+      taxi: green
+
+  - id: yellow_schedule
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "0 10 1 * *"
+    inputs:
+      taxi: yellow
