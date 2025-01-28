@@ -170,8 +170,11 @@ See the `scripts` folder that is maintained by `poetry` and `pyenv` for more inf
 The `ingest_data.py` script reads only from `.parquet` files stored in the NY Taxi website.  I found that there are discrepanices in the `green` taxi `2020` data between .csv and .parquet.
 
 - parquet data
+
 [![2025-01-23-21-48-42.jpg](https://i.postimg.cc/bvn7Yzfv/2025-01-23-21-48-42.jpg)](https://postimg.cc/bGzC3fJX)
+
 - csv data
+
 [![2025-01-25-19-10-50.jpg](https://i.postimg.cc/hjqHfHK1/2025-01-25-19-10-50.jpg)](https://postimg.cc/DWBCNpJS)
 
 Therefore, I couldn't use this Python script ETL pipeline to solve the homework problems above based on the discrepancies. But I could use this for my final project.
