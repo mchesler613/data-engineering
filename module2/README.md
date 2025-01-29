@@ -150,6 +150,13 @@ In each of the gcp yaml flows, I replaced the `GCP_CRED` with `GCP_SERVICE_ACCOU
 ```
 serviceAccount: "{{ secret('GCP_SERVICE_ACCOUNT') }}"
 ```
+### docker-compose.yml
+
+To dockerize the kestra, postgres and pgadmin services inside docker, do `docker compose up -d` at the folder where the docker-compose.yml lives.
+
+- Access `pgadmin` at the browser, `http://localhost:8080`
+    - Add a `postgres` server in `pgadmin` based on the docker-compose.yml configuration 
+- Access `kestra` at the browser, `http://localhost:8082`
 
 ### Terraform for GCS and GBQ resource creation
 
