@@ -175,3 +175,4 @@ ny_taxi_postgres_data/
 
 # VI editor
 .swp
+.*.swp
